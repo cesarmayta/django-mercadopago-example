@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago con MercadoPago</title>
+</head>
+<body>
+    <h1>Realizar pago</h1>
+    <button id="boton-pago">Pagar S/ 100</button>
+
+    <script src="https://www.mercadopago.com/v2/security.js" view="home"></script>
+    <script src="https://www.mercadopago.com/v2/checkout/pref.js" view="home"></script>
+    <script>
+        document.getElementById('boton-pago').addEventListener('click', function() {
+            fetch('/pagar', {
+                method: 'POST', 
+                headers:{
+                    'Conten-Type':'application/json',
+                    'X-CSRFToken': '{{csrf_token}}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                Mercadopago.createCheckout({
+                    preferenceId: data.id
+                });
+            });
+        });
+    </script>
+</body>
+</html>
